@@ -383,7 +383,7 @@ module Vpim
       # Override the attr reader to make it dynamic
       remove_method :formatted
       def formatted #:nodoc:
-        f = [ @prefix, @given, @additional, @family ].map{|i| i == '' ? nil : i.strip}.compact.join(' ')
+        f = [ @prefix, @given, @additional, @family ].map{|i| i == '' ? nil : (i ? i.strip : '')}.compact.join(' ')
         if @suffix != ''
           f << ', ' << @suffix
         end
@@ -407,7 +407,7 @@ module Vpim
 
       def encode #:nodoc:
          Vpim::DirectoryInfo::Field.create('N',
-           Vpim.encode_text_list([ @family, @given, @additional, @prefix, @suffix ].map{|n| n.strip}, ';')
+           Vpim.encode_text_list([ @family, @given, @additional, @prefix, @suffix ].map{|n| n ? n.strip : ''}, ';')
            )
       end
       def encode_fn #:nodoc:
